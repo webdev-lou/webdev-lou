@@ -4,16 +4,6 @@
    ============================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', function () {
-            mobileMenu.classList.toggle('hidden');
-        });
-    }
-
     // Contact Form Handling
     const contactForm = document.getElementById('contact-form');
     const submitBtn = document.getElementById('submit-btn');
