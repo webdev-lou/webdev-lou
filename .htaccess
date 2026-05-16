@@ -17,3 +17,7 @@ RewriteRule ^(.*)$ $1.html [NC,L]
 
 # Set default directory index
 DirectoryIndex index.html
+
+
+
+

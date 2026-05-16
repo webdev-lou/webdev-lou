@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="flex size-8 items-center justify-center rounded-lg bg-primary text-white group-hover:bg-primary-dark transition-colors">
                             <span class="material-symbols-outlined text-[20px]">code</span>
                         </div>
-                        <span class="text-lg font-bold tracking-tight text-text-main dark:text-white">Marlou Mupas</span>
+                        <span class="text-lg font-bold tracking-tight text-text-main dark:text-white">Louei</span>
                     </a>
                 </div>
                 <nav class="hidden md:flex items-center gap-8">
