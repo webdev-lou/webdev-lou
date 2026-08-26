@@ -1,0 +1,6 @@
+# Contact-form submission log - contains personal data, never commit it
+submissions.txt
+
+# OS / editor cruft
+.DS_Store
+*.log

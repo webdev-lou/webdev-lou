@@ -21,3 +21,24 @@ DirectoryIndex index.html
 
 
 
+# Block web access to the contact-form log and other sensitive files
+<FilesMatch "^(submissions\.txt|.*\.(log|bak|sql|ini|env))$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block dotfiles (.htaccess, .env, .git metadata)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
