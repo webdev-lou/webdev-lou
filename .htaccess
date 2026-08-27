@@ -2,15 +2,17 @@
 RewriteEngine On
 
 # Block the .git directory. Git-based deploys drop it in the web root, and the
-# FilesMatch "^\." rule below does not cover it: that matches the filename only,
-# so /.git/config reads as "config" and would otherwise be served.
+# FilesMatch "^\." rule below does not cover it: FilesMatch tests only the final
+# path component, so /.git/config reads as "config" and would otherwise be served.
 RewriteRule ^\.git(/|$) - [F,L]
 
 # Redirect /index or /index.html to root /
 RewriteCond %{THE_REQUEST} /index(\.html)?[\s?] [NC]
 RewriteRule ^ / [R=301,L]
 
-# Redirect requests with .html to clean URLs (prevents duplicate content)
+# Redirect requests with .html to clean URLs (prevents duplicate content).
+# The trigger is THE_REQUEST - the raw request line, which internal rewrites do
+# not change - so this cannot loop. The REQUEST_URI line is only an exclusion.
 RewriteCond %{THE_REQUEST} /([^.]+)\.html [NC]
 RewriteCond %{REQUEST_URI} !^/index\.html$
 RewriteRule ^ /%1 [NC,L,R=301]
@@ -23,11 +25,13 @@ RewriteRule ^(.*)$ $1.html [NC,L]
 # Set default directory index
 DirectoryIndex index.html
 
-
+# No directory listings, no version banner in error pages.
+Options -Indexes
+ServerSignature Off
 
 
 # Block web access to the contact-form log and other sensitive files
-<FilesMatch "^(submissions\.txt|.*\.(log|bak|sql|ini|env))$">
+<FilesMatch "^(submissions\.txt|.*\.(log|bak|sql|ini|env|conf|dist|orig|save|old|swp|tmp|map|zip|tar|gz|rar|7z|md))$">
     <IfModule mod_authz_core.c>
         Require all denied
     </IfModule>
@@ -37,7 +41,22 @@ DirectoryIndex index.html
     </IfModule>
 </FilesMatch>
 
-# Block dotfiles (.htaccess, .env, .git metadata)
+# Block PHP credential files. None exist today; this is here so that adding one
+# later cannot quietly publish it.
+<FilesMatch "(db_connect|smtp_config|config|secrets|env)(\.example)?\.php$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Block dotfiles (.htaccess, .env, .git metadata, .DS_Store).
+# FilesMatch tests the filename only, so /.well-known/acme-challenge/<token>
+# stays reachable and TLS renewal keeps working. Do not replace this with
+# RedirectMatch 404 /\..*$ - that breaks certificate renewal silently.
 <FilesMatch "^\.">
     <IfModule mod_authz_core.c>
         Require all denied
@@ -47,3 +66,35 @@ DirectoryIndex index.html
         Deny from all
     </IfModule>
 </FilesMatch>
+
+
+# Security headers. Cloudflare currently injects most of these at the edge, but
+# that protection disappears for anything reaching the origin directly, so set
+# them here too.
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+
+    # Matches the value Cloudflare already sends, so the two cannot conflict.
+    # CSP frame-ancestors below is the stricter, modern control.
+    Header always set X-Frame-Options "SAMEORIGIN"
+
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Cross-Origin-Opener-Policy "same-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+
+    # No includeSubDomains: it would force HTTPS on every subdomain, and any
+    # without a valid certificate become unreachable with no click-through.
+    Header always set Strict-Transport-Security "max-age=31536000"
+
+    Header unset X-Powered-By
+    Header always unset X-Powered-By
+
+    # CSP is scoped to the origins this site actually loads:
+    #   cdn.tailwindcss.com   - Tailwind Play CDN (script)
+    #   fonts.googleapis.com  - Google Fonts stylesheet
+    #   fonts.gstatic.com     - the font files that stylesheet pulls
+    # 'unsafe-inline' is required for both script and style: the page carries
+    # inline <script> config blocks and the Tailwind CDN injects a <style> at
+    # runtime. Removing it means dropping the Tailwind CDN first.
+    Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; upgrade-insecure-requests"
+</IfModule>

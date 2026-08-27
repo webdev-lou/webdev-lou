@@ -4,3 +4,10 @@ submissions.txt
 # OS / editor cruft
 .DS_Store
 *.log
+
+# Local secrets
+.env
+.env.*
+
+# Private runtime data written outside the web root
+private/

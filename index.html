@@ -650,6 +650,11 @@
                                     Send Message
                                 </button>
                                 <div id="form-message" class="text-center text-sm font-medium hidden"></div>
+                                <!-- Honeypot: hidden from people, tempting to bots. Deliberately NOT
+                                     named "website" - that is a real field above, and reusing the name
+                                     would reject every visitor who fills their site in. -->
+                                <input type="text" name="company" tabindex="-1" autocomplete="off"
+                                    aria-hidden="true" style="position:absolute;left:-9999px" />
                             </form>
                         </div>
                     </div>
