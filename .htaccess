@@ -1,6 +1,11 @@
 # Enable URL Rewriting
 RewriteEngine On
 
+# Block the .git directory. Git-based deploys drop it in the web root, and the
+# FilesMatch "^\." rule below does not cover it: that matches the filename only,
+# so /.git/config reads as "config" and would otherwise be served.
+RewriteRule ^\.git(/|$) - [F,L]
+
 # Redirect /index or /index.html to root /
 RewriteCond %{THE_REQUEST} /index(\.html)?[\s?] [NC]
 RewriteRule ^ / [R=301,L]
