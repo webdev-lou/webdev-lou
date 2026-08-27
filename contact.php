@@ -57,6 +57,72 @@ if ($storage_ok) {
     file_put_contents($rate_file, json_encode($rate), LOCK_EX);
 }
 
+// --- reCAPTCHA v2 (checkbox) ------------------------------------------------
+// Runs after the local gates on purpose: a bot that trips the honeypot or the
+// rate limit is rejected without costing us a call to Google.
+//
+// The secret key is loaded from OUTSIDE the web root. It must never sit in the
+// repository - this one is public on GitHub - nor anywhere URL-reachable.
+$recaptcha_config = $private_dir . "/recaptcha_config.php";
+$recaptcha_secret = '';
+if (is_readable($recaptcha_config)) {
+    $cfg = require $recaptcha_config;
+    if (is_array($cfg) && !empty($cfg['secret_key'])) {
+        $recaptcha_secret = $cfg['secret_key'];
+    }
+}
+
+// Fail CLOSED. A missing config or an unreachable Google must reject the
+// submission, never wave it through.
+if ($recaptcha_secret === '' || !function_exists('curl_init')) {
+    error_log("contact.php: reCAPTCHA not configured (missing secret or curl) - rejecting");
+    http_response_code(503);
+    echo json_encode(["status" => "error", "message" => "We couldn't verify your submission right now. Please email hello@webdev-lou.com directly."]);
+    exit;
+}
+
+$recaptcha_token = $_POST['g-recaptcha-response'] ?? '';
+if ($recaptcha_token === '') {
+    http_response_code(403);
+    echo json_encode(["status" => "error", "message" => "Please confirm you're not a robot."]);
+    exit;
+}
+
+$ch = curl_init('https://www.google.com/recaptcha/api/siteverify');
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST           => true,
+    CURLOPT_POSTFIELDS     => http_build_query([
+        'secret'   => $recaptcha_secret,
+        'response' => $recaptcha_token,
+        'remoteip' => $client_ip,
+    ]),
+    CURLOPT_TIMEOUT        => 10,
+    CURLOPT_SSL_VERIFYPEER => true,   // never disable
+]);
+$recaptcha_body = curl_exec($ch);
+$recaptcha_status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+// No curl_close(): a no-op since PHP 8.0 and deprecated in 8.5, where its
+// notice can print before our JSON and corrupt the response the front end parses.
+
+if ($recaptcha_body === false || $recaptcha_status !== 200) {
+    error_log("contact.php: reCAPTCHA verify unreachable (HTTP $recaptcha_status)");
+    http_response_code(503);
+    echo json_encode(["status" => "error", "message" => "We couldn't verify your submission right now. Please try again shortly."]);
+    exit;
+}
+
+$recaptcha_data = json_decode($recaptcha_body, true);
+
+// v2 checkbox returns a plain boolean "success" and NO score. Do not read
+// $data['score'] here: v3 and Enterprise keys behave differently, and an
+// absent score defaulting to 0 silently rejects every genuine visitor.
+if (!is_array($recaptcha_data) || empty($recaptcha_data['success'])) {
+    http_response_code(403);
+    echo json_encode(["status" => "error", "message" => "Verification failed. Please tick the box and try again."]);
+    exit;
+}
+
 // --- Input ------------------------------------------------------------------
 // Trim and length-cap only. These values go into a text/plain email and a text
 // log, so HTML-escaping here would corrupt legitimate input ("O'Brien" would
@@ -128,7 +194,7 @@ $to = "hello@webdev-lou.com";
 $safe_name = sanitize_header($name);
 $safe_email = sanitize_header($email);
 $subject = "New Contact Form Submission from " . $safe_name;
-$headers = "From: webdev-lou.com <noreply@webdev-lou.com>\r\n";
+$headers = "From: webdev-lou.com <hello@webdev-lou.com>\r\n";
 $headers .= "Reply-To: $safe_name <$safe_email>\r\n";
 $headers .= "Content-Type: text/plain; charset=UTF-8";
 

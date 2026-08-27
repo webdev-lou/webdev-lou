@@ -9,6 +9,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submit-btn');
     const formMessage = document.getElementById('form-message');
 
+    // A reCAPTCHA token is single-use and is consumed by the server on every
+    // submit, including failed ones. Without this reset, a visitor who hits any
+    // error - a validation message, a rate limit - would resubmit the spent
+    // token and be told verification failed, with no way out but a page reload.
+    function resetCaptcha() {
+        if (window.grecaptcha && typeof window.grecaptcha.reset === 'function') {
+            try { window.grecaptcha.reset(); } catch (err) { /* widget not rendered yet */ }
+        }
+    }
+
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -47,6 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         formMessage.classList.add('text-red-600');
                         submitBtn.disabled = false;
                         submitBtn.textContent = 'Send Message';
+                        resetCaptcha();
                     }
                 })
                 .catch(function (error) {
@@ -56,6 +67,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     formMessage.classList.add('text-red-600');
                     submitBtn.disabled = false;
                     submitBtn.textContent = 'Send Message';
+                    resetCaptcha();
                 });
         });
     }

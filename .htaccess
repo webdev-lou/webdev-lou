@@ -93,8 +93,12 @@ ServerSignature Off
     #   cdn.tailwindcss.com   - Tailwind Play CDN (script)
     #   fonts.googleapis.com  - Google Fonts stylesheet
     #   fonts.gstatic.com     - the font files that stylesheet pulls
+    #   www.google.com        - reCAPTCHA api.js and its challenge iframe
+    #   www.gstatic.com       - reCAPTCHA's own scripts and images
+    # frame-src must be named explicitly: without it the reCAPTCHA iframe falls
+    # back to default-src 'self' and the widget renders as an empty box.
     # 'unsafe-inline' is required for both script and style: the page carries
     # inline <script> config blocks and the Tailwind CDN injects a <style> at
     # runtime. Removing it means dropping the Tailwind CDN first.
-    Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; upgrade-insecure-requests"
+    Header always set Content-Security-Policy "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.gstatic.com; frame-src https://www.google.com; connect-src 'self' https://www.google.com; upgrade-insecure-requests"
 </IfModule>
