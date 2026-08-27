@@ -19,9 +19,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
+    // People type "www.example.com", not "https://www.example.com". The field is
+    // type="text" so the browser stops rejecting that, and we add the scheme
+    // ourselves. Anything with a non-http(s) scheme (javascript:, data:) has it
+    // stripped rather than trusted.
+    function normaliseWebsite(value) {
+        var v = (value || '').trim();
+        if (v === '') return '';
+        if (/^https?:\/\//i.test(v)) return v;
+        return 'https://' + v.replace(/^[a-z][a-z0-9+.-]*:\/*/i, '');
+    }
+
+    var websiteField = document.getElementById('website');
+    if (websiteField) {
+        websiteField.addEventListener('blur', function () {
+            websiteField.value = normaliseWebsite(websiteField.value);
+        });
+    }
+
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
+
+            if (websiteField) {
+                websiteField.value = normaliseWebsite(websiteField.value);
+            }
 
             // Disable button and show loading state
             submitBtn.disabled = true;

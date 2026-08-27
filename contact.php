@@ -150,6 +150,16 @@ $phone   = clean_field($_POST['phone']   ?? '');
 $website = clean_field($_POST['website'] ?? '');
 $message = clean_field($_POST['message'] ?? '', 5000);
 
+// Visitors type "www.example.com" without a scheme, so the field accepts it and
+// we add one here. Repeated server-side because the browser-side normalisation
+// can simply be skipped by posting directly. A scheme other than http(s) -
+// javascript:, data: - is stripped rather than carried into the mail body.
+if ($website !== '') {
+    if (!preg_match('#^https?://#i', $website)) {
+        $website = 'https://' . preg_replace('#^[a-z][a-z0-9+.-]*:/*#i', '', $website);
+    }
+}
+
 // Validate required fields
 if (empty($name) || empty($email) || empty($message)) {
     http_response_code(400);
