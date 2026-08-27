@@ -6,6 +6,35 @@ RewriteEngine On
 # path component, so /.git/config reads as "config" and would otherwise be served.
 RewriteRule ^\.git(/|$) - [F,L]
 
+# Canonical host and scheme: https://www.webdev-lou.com
+#
+# The both-wrong case is handled first so a plain http:// apex request is fixed
+# in ONE redirect rather than chaining two, each of which is a full round trip.
+#
+# X-Forwarded-Proto is what makes this safe behind Cloudflare. %{HTTPS} reads
+# "off" at the origin whenever Cloudflare talks to it over HTTP (SSL mode
+# Flexible), so without this condition rules 1 and 2 would redirect a request
+# that already arrived over TLS at the edge - an infinite loop that takes the
+# whole site down. The localhost exemption keeps local Apache testing working.
+
+# 1. wrong scheme AND wrong host -> fix both at once
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTP_HOST} !^localhost [NC]
+RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 2. wrong scheme only
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteCond %{HTTP_HOST} !^localhost [NC]
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+# 3. wrong host only
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteCond %{HTTP_HOST} !^localhost [NC]
+RewriteRule ^ https://www.%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
 # Redirect /index or /index.html to root /
 RewriteCond %{THE_REQUEST} /index(\.html)?[\s?] [NC]
 RewriteRule ^ / [R=301,L]
