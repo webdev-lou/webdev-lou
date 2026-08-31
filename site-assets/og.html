@@ -1,0 +1,53 @@
+<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+ *{margin:0;padding:0;box-sizing:border-box;}
+ html,body{width:1200px;height:630px;overflow:hidden;font-family:Inter,sans-serif;}
+ .og{position:relative;width:1200px;height:630px;overflow:hidden;
+   background:
+     radial-gradient(900px 520px at 84% 6%, rgba(37,99,235,.44) 0%, rgba(37,99,235,0) 62%),
+     radial-gradient(640px 420px at 12% 104%, rgba(37,99,235,.22) 0%, rgba(37,99,235,0) 70%),
+     linear-gradient(122deg,#0b1120 0%,#0f172a 55%,#111e37 100%);}
+ .og::before{content:"";position:absolute;inset:0;
+   background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px);
+   background-size:28px 28px;
+   -webkit-mask-image:linear-gradient(105deg,transparent 0%,#000 30%,#000 100%);}
+ .rule{position:absolute;top:0;left:0;right:0;height:5px;
+   background:linear-gradient(90deg,#2563eb 0%,#3b82f6 46%,rgba(59,130,246,0) 90%);}
+ .inner{position:absolute;inset:0;padding:62px 68px;display:flex;flex-direction:column;
+   justify-content:space-between;}
+ .brand{display:flex;align-items:center;gap:15px;}
+ .mark{width:46px;height:46px;border-radius:11px;background:#2563eb;
+   display:flex;align-items:center;justify-content:center;}
+ .bname{font-size:20px;font-weight:600;color:#e2ecf7;letter-spacing:-.008em;}
+ h1{font-size:66px;font-weight:800;line-height:1.06;letter-spacing:-.034em;color:#f8fafc;}
+ h1 .b{color:#60a5fa;}
+ .sub{margin-top:18px;font-size:22px;font-weight:500;color:#93a8c4;letter-spacing:.002em;}
+ .foot{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;}
+ .stats{display:flex;gap:38px;}
+ .st{border-left:4px solid #2563eb;padding-left:15px;}
+ .stn{font-size:31px;font-weight:800;color:#3b82f6;letter-spacing:-.028em;line-height:1.1;}
+ .stl{font-size:14.5px;font-weight:500;color:#8ba0bd;margin-top:3px;}
+ .url{font-size:20px;font-weight:700;color:#cddcec;letter-spacing:.005em;}
+</style></head><body>
+<div class="og"><div class="rule"></div><div class="inner">
+  <div class="brand">
+    <div class="mark"><svg width="26" height="26" viewBox="0 0 64 64" fill="none" stroke="#fff"
+      stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M25 21 L15 32 L25 43"/><path d="M39 21 L49 32 L39 43"/></svg></div>
+    <div class="bname">Marlou Mupas</div>
+  </div>
+  <div>
+    <h1>Senior Web Developer<br><span class="b">&amp; Team Lead</span></h1>
+    <div class="sub">WordPress · WooCommerce · Shopify · PHP · Performance · Hosting</div>
+  </div>
+  <div class="foot">
+    <div class="stats">
+      <div class="st"><div class="stn">15+</div><div class="stl">years</div></div>
+      <div class="st"><div class="stn">300+</div><div class="stl">client sites</div></div>
+      <div class="st"><div class="stn">50+</div><div class="stl">retainer clients</div></div>
+      <div class="st"><div class="stn">99</div><div class="stl">Lighthouse</div></div>
+    </div>
+    <div class="url">webdev-lou.com</div>
+  </div>
+</div></div></body></html>
