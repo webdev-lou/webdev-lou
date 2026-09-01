@@ -175,3 +175,12 @@ body {
         transition: none;
     }
 }
+
+/* Horizontal experience slider: honour the OS motion setting for the smooth
+   scroll too, not just the fade-ins. The JS passes behavior:'auto' to
+   scrollBy for the same reason. */
+@media (prefers-reduced-motion: reduce) {
+    #exp-track {
+        scroll-behavior: auto;
+    }
+}

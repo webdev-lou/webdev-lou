@@ -9,6 +9,45 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submit-btn');
     const formMessage = document.getElementById('form-message');
 
+    // Experience slider. Scrolling itself is native overflow-x, so touch,
+    // trackpad and keyboard already work; these buttons only add a visible
+    // affordance for mouse users, and disable themselves at each end.
+    var expTrack = document.getElementById('exp-track');
+    var expPrev = document.getElementById('exp-prev');
+    var expNext = document.getElementById('exp-next');
+
+    if (expTrack && expPrev && expNext) {
+        var reduceMotion = window.matchMedia
+            && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        var expStep = function () {
+            var card = expTrack.querySelector('article');
+            // card width + the flex gap, so one click advances exactly one card
+            return card ? card.getBoundingClientRect().width + 24 : 320;
+        };
+
+        var syncExpButtons = function () {
+            // 2px tolerance: scrollLeft can land on a fractional pixel and never
+            // exactly equal the maximum, which would leave "next" enabled at the end.
+            var max = expTrack.scrollWidth - expTrack.clientWidth;
+            expPrev.disabled = expTrack.scrollLeft <= 2;
+            expNext.disabled = expTrack.scrollLeft >= max - 2;
+        };
+
+        var expScroll = function (dir) {
+            expTrack.scrollBy({
+                left: dir * expStep(),
+                behavior: reduceMotion ? 'auto' : 'smooth'
+            });
+        };
+
+        expPrev.addEventListener('click', function () { expScroll(-1); });
+        expNext.addEventListener('click', function () { expScroll(1); });
+        expTrack.addEventListener('scroll', syncExpButtons, { passive: true });
+        window.addEventListener('resize', syncExpButtons);
+        syncExpButtons();
+    }
+
     // Reveal the skills groups when they scroll into view. The hidden state is
     // added here rather than in the stylesheet so that a browser without
     // IntersectionObserver — or with JS off — shows the chips normally instead
