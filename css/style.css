@@ -234,3 +234,111 @@ body {
         animation: none;
     }
 }
+
+/* ============================================
+   Skills graph (Obsidian-style force layout)
+   ============================================ */
+
+/* The toggle is hidden until JS has confirmed it can draw, so a no-JS visitor
+   never sees a Graph tab that does nothing. */
+#skills-views [role="tablist"] {
+    display: none;
+}
+
+#skills-views.skills-views--ready [role="tablist"] {
+    display: inline-flex;
+}
+
+.skills-tab.is-on {
+    background: #ffffff;
+    color: #0f172a;
+    box-shadow: 0 1px 2px rgb(15 23 42 / .08);
+}
+
+.dark .skills-tab.is-on {
+    background: #374151;
+    color: #ffffff;
+}
+
+.skills-graph-wrap {
+    --sg-link: #cbd5e1;
+    --sg-skill: #94a3b8;
+    --sg-cat: #2563eb;
+    --sg-root: #1d4ed8;
+    --sg-text: #64748b;
+    --sg-text-strong: #0f172a;
+}
+
+.dark .skills-graph-wrap {
+    --sg-link: #374151;
+    --sg-skill: #6b7280;
+    --sg-cat: #3b82f6;
+    --sg-root: #60a5fa;
+    --sg-text: #9ca3af;
+    --sg-text-strong: #ffffff;
+}
+
+#skills-graph {
+    display: block;
+    cursor: grab;
+}
+
+#skills-graph:active {
+    cursor: grabbing;
+}
+
+.sg-link {
+    stroke: var(--sg-link);
+    stroke-width: 1;
+    transition: opacity .2s ease;
+}
+
+.sg-node circle {
+    fill: var(--sg-skill);
+    transition: fill .2s ease, r .2s ease;
+}
+
+.sg-node--cat circle { fill: var(--sg-cat); }
+.sg-node--root circle { fill: var(--sg-root); }
+
+.sg-label {
+    font-family: Inter, sans-serif;
+    font-size: 9px;
+    fill: var(--sg-text);
+    pointer-events: none;
+    transition: opacity .2s ease, fill .2s ease;
+}
+
+.sg-node--cat .sg-label {
+    font-size: 11px;
+    font-weight: 700;
+    fill: var(--sg-text-strong);
+}
+
+.sg-node--root .sg-label {
+    font-size: 12px;
+    font-weight: 800;
+    fill: var(--sg-text-strong);
+}
+
+/* 46 skill labels drawn at once overlap into mush - the same clutter this
+   section was just redesigned to remove. At rest only the nine category
+   labels show; hovering a category reveals the skills hanging off it. */
+.sg-node--skill .sg-label { opacity: 0; }
+.sg-node--skill.show-label .sg-label { opacity: 1; }
+
+.sg-node.is-dim { opacity: .18; }
+.sg-link.is-dim { opacity: .12; }
+
+.sg-node.is-active circle {
+    fill: var(--sg-cat);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sg-link,
+    .sg-node circle,
+    .sg-label {
+        transition: none;
+    }
+}

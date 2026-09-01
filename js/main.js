@@ -9,6 +9,233 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submit-btn');
     const formMessage = document.getElementById('form-message');
 
+    // ---------------------------------------------------------------------
+    // Skills graph
+    //
+    // A hand-written force simulation rather than d3 or cytoscape: those are
+    // 270-400KB, and a CDN copy would be refused outright by this site's CSP
+    // (script-src 'self' plus a short allowlist). 56 nodes is small enough that
+    // naive O(n^2) repulsion is nothing.
+    //
+    // Nodes are read out of the List panel, so the two views cannot disagree.
+    // ---------------------------------------------------------------------
+    (function () {
+        var svg = document.getElementById('skills-graph');
+        var graphPanel = document.getElementById('skills-panel-graph');
+        var listPanel = document.getElementById('skills-panel-list');
+        var tabGraph = document.getElementById('skills-tab-graph');
+        var tabList = document.getElementById('skills-tab-list');
+        if (!svg || !graphPanel || !listPanel || !tabGraph || !tabList) return;
+
+        var NS = 'http://www.w3.org/2000/svg';
+        var W = 820, H = 600, CX = W / 2, CY = H / 2;
+
+        // --- read the list -------------------------------------------------
+        var nodes = [], links = [];
+        var center = { id: 'root', label: 'Skills', kind: 'root', r: 13, x: CX, y: CY, vx: 0, vy: 0 };
+        nodes.push(center);
+
+        var rows = listPanel.querySelectorAll('.skill-group');
+        var cats = [];
+        Array.prototype.forEach.call(rows, function (row, ci) {
+            var ps = row.querySelectorAll('p');
+            if (ps.length < 2) return;
+            var catLabel = ps[0].textContent.trim();
+            // Items are the text nodes between the middot spans.
+            var items = Array.prototype.filter.call(ps[1].childNodes, function (n) {
+                return n.nodeType === 3 && n.textContent.trim();
+            }).map(function (n) { return n.textContent.trim(); });
+            if (!items.length) return;
+
+            var a = (ci / rows.length) * Math.PI * 2;
+            var cat = {
+                id: 'c' + ci, label: catLabel, kind: 'cat', r: 8, group: ci,
+                x: CX + Math.cos(a) * 200, y: CY + Math.sin(a) * 175, vx: 0, vy: 0
+            };
+            nodes.push(cat); cats.push(cat);
+            links.push({ a: center, b: cat, len: 200 });
+
+            items.forEach(function (label, si) {
+                var sa = a + (si - (items.length - 1) / 2) * 0.34;
+                nodes.push({
+                    id: 'c' + ci + 's' + si, label: label, kind: 'skill', r: 4.2, group: ci,
+                    x: cat.x + Math.cos(sa) * 74, y: cat.y + Math.sin(sa) * 74, vx: 0, vy: 0
+                });
+                links.push({ a: cat, b: nodes[nodes.length - 1], len: 74 });
+            });
+        });
+        if (cats.length === 0) return;
+
+        // --- build svg -----------------------------------------------------
+        var gLinks = document.createElementNS(NS, 'g');
+        var gNodes = document.createElementNS(NS, 'g');
+        svg.appendChild(gLinks); svg.appendChild(gNodes);
+
+        links.forEach(function (l) {
+            l.el = document.createElementNS(NS, 'line');
+            l.el.setAttribute('class', 'sg-link');
+            gLinks.appendChild(l.el);
+        });
+
+        nodes.forEach(function (n) {
+            var g = document.createElementNS(NS, 'g');
+            g.setAttribute('class', 'sg-node sg-node--' + n.kind);
+            var c = document.createElementNS(NS, 'circle');
+            c.setAttribute('r', n.r);
+            var t = document.createElementNS(NS, 'text');
+            t.setAttribute('class', 'sg-label');
+            t.setAttribute('text-anchor', 'middle');
+            t.setAttribute('dy', -n.r - 5);
+            t.textContent = n.label;
+            g.appendChild(c); g.appendChild(t);
+            gNodes.appendChild(g);
+            n.el = g;
+
+            g.addEventListener('mouseenter', function () { setActive(n); });
+            g.addEventListener('mouseleave', function () { setActive(null); });
+        });
+
+        function setActive(node) {
+            svg.classList.toggle('sg-has-active', !!node);
+            nodes.forEach(function (n) {
+                var on = !node || n === node ||
+                    (node.kind !== 'root' && n.group === node.group && n.kind !== 'root') ||
+                    (n.kind === 'root' && node.kind === 'cat');
+                n.el.classList.toggle('is-dim', !!node && !on);
+                n.el.classList.toggle('is-active', node === n);
+                // Drive the label directly off a class on the node. Relying on an
+                // ancestor .sg-has-active rule to out-specify the resting
+                // "hidden" rule proved unreliable; one class, one rule is
+                // predictable.
+                n.el.classList.toggle('show-label', !!node && on && n.kind === 'skill');
+            });
+            links.forEach(function (l) {
+                var on = !node || l.a === node || l.b === node ||
+                    (node.kind === 'cat' && (l.a.group === node.group || l.b.group === node.group));
+                l.el.classList.toggle('is-dim', !!node && !on);
+            });
+        }
+
+        // --- simulation ----------------------------------------------------
+        var REP = 3300, SPRING = 0.05, GRAVITY = 0.010, DAMP = 0.85;
+
+        function tick() {
+            var i, j, a, b, dx, dy, d2, d, f;
+            for (i = 0; i < nodes.length; i++) {
+                for (j = i + 1; j < nodes.length; j++) {
+                    a = nodes[i]; b = nodes[j];
+                    dx = b.x - a.x; dy = b.y - a.y;
+                    d2 = dx * dx + dy * dy || 0.01;
+                    if (d2 > 90000) continue;          // ignore distant pairs
+                    d = Math.sqrt(d2);
+                    f = REP / d2;
+                    dx /= d; dy /= d;
+                    a.vx -= dx * f; a.vy -= dy * f;
+                    b.vx += dx * f; b.vy += dy * f;
+                }
+            }
+            links.forEach(function (l) {
+                dx = l.b.x - l.a.x; dy = l.b.y - l.a.y;
+                d = Math.sqrt(dx * dx + dy * dy) || 0.01;
+                f = (d - l.len) * SPRING;
+                dx = dx / d * f; dy = dy / d * f;
+                l.a.vx += dx; l.a.vy += dy;
+                l.b.vx -= dx; l.b.vy -= dy;
+            });
+            var moved = 0;
+            nodes.forEach(function (n) {
+                if (n === dragging) return;
+                n.vx += (CX - n.x) * GRAVITY;
+                n.vy += (CY - n.y) * GRAVITY;
+                n.vx *= DAMP; n.vy *= DAMP;
+                n.x += n.vx; n.y += n.vy;
+                // keep everything inside the viewBox
+                var m = n.r + 46;
+                n.x = Math.max(m, Math.min(W - m, n.x));
+                n.y = Math.max(m + 6, Math.min(H - m, n.y));
+                moved += Math.abs(n.vx) + Math.abs(n.vy);
+            });
+            return moved;
+        }
+
+        function draw() {
+            nodes.forEach(function (n) {
+                n.el.setAttribute('transform', 'translate(' + n.x.toFixed(1) + ',' + n.y.toFixed(1) + ')');
+            });
+            links.forEach(function (l) {
+                l.el.setAttribute('x1', l.a.x.toFixed(1)); l.el.setAttribute('y1', l.a.y.toFixed(1));
+                l.el.setAttribute('x2', l.b.x.toFixed(1)); l.el.setAttribute('y2', l.b.y.toFixed(1));
+            });
+        }
+
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var raf = null, dragging = null;
+
+        function run() {
+            if (raf) return;
+            (function loop() {
+                var moved = tick();
+                draw();
+                // Stop once it settles. An always-on rAF loop would burn battery
+                // for a decoration that has stopped moving.
+                if (moved < 0.6 && !dragging) { raf = null; return; }
+                raf = requestAnimationFrame(loop);
+            })();
+        }
+
+        function settle(n) { for (var i = 0; i < n; i++) tick(); draw(); }
+
+        // --- drag ----------------------------------------------------------
+        svg.addEventListener('pointerdown', function (e) {
+            var g = e.target.closest && e.target.closest('.sg-node');
+            if (!g) return;
+            dragging = nodes.filter(function (n) { return n.el === g; })[0] || null;
+            if (dragging) { svg.setPointerCapture(e.pointerId); run(); }
+        });
+        svg.addEventListener('pointermove', function (e) {
+            if (!dragging) return;
+            var r = svg.getBoundingClientRect();
+            dragging.x = (e.clientX - r.left) / r.width * W;
+            dragging.y = (e.clientY - r.top) / r.height * H;
+            dragging.vx = dragging.vy = 0;
+            draw();
+        });
+        function endDrag(e) {
+            if (!dragging) return;
+            dragging = null;
+            try { svg.releasePointerCapture(e.pointerId); } catch (err) { }
+            run();
+        }
+        svg.addEventListener('pointerup', endDrag);
+        svg.addEventListener('pointercancel', endDrag);
+
+        // --- tabs ----------------------------------------------------------
+        var started = false;
+        function show(which) {
+            var g = which === 'graph';
+            graphPanel.hidden = !g;
+            listPanel.hidden = g;
+            tabGraph.setAttribute('aria-selected', String(g));
+            tabList.setAttribute('aria-selected', String(!g));
+            tabGraph.classList.toggle('is-on', g);
+            tabList.classList.toggle('is-on', !g);
+            if (g && !started) {
+                started = true;
+                // Pre-settle so it opens on a formed graph rather than a
+                // starburst that visibly untangles itself.
+                settle(reduce ? 400 : 120);
+                if (!reduce) run();
+            }
+        }
+        tabGraph.addEventListener('click', function () { show('graph'); });
+        tabList.addEventListener('click', function () { show('list'); });
+
+        // Only now reveal the toggle: without JS the list stands on its own and
+        // a Graph tab that does nothing would be worse than no tab at all.
+        document.getElementById('skills-views').classList.add('skills-views--ready');
+        show('graph');
+    })();
+
     // Experience slider. Scrolling itself is native overflow-x, so touch,
     // trackpad and keyboard already work; these buttons only add a visible
     // affordance for mouse users, and disable themselves at each end.

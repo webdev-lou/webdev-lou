@@ -79,7 +79,7 @@
         }
     </script>
     <link rel="canonical" href="https://www.webdev-lou.com/" />
-    <link rel="stylesheet" href="css/style.css?v=2.1">
+    <link rel="stylesheet" href="css/style.css?v=2.2">
 </head>
 
 <body
@@ -88,7 +88,7 @@
         <div id="header-placeholder"></div>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script src="js/header.js?v=1.5"></script>
-        <script src="js/main.js?v=1.8"></script>
+        <script src="js/main.js?v=1.9"></script>
         <main class="flex-1 pt-16">
             <section
                 class="relative overflow-hidden bg-background-light pt-16 pb-20 lg:pt-24 lg:pb-28 dark:bg-background-dark">
@@ -574,7 +574,25 @@
                             <h2 class="text-3xl font-bold tracking-tight text-text-main sm:text-4xl dark:text-white">Technical Skills</h2>
                             <p class="mt-4 max-w-3xl text-lg text-text-muted dark:text-gray-400">The stack I work in day to
                                 day, from the code itself through to the servers, DNS and hosting it runs on.</p>
-                        <div id="skills-groups" class="mt-10 divide-y divide-border-light dark:divide-gray-800">
+                        <!-- Graph and List are two views of the same data. The list is the source of
+                             truth: the graph is generated from these rows at runtime, so they cannot
+                             drift apart. The list also stays reachable for anyone scanning, searching
+                             the page, or using a screen reader - a canvas of dots is none of those. -->
+                        <div class="mt-8" id="skills-views">
+                            <div role="tablist" aria-label="Skills display" class="inline-flex gap-1 rounded-lg border border-border-light bg-background-alt p-1 dark:border-gray-700 dark:bg-gray-800">
+                                <button type="button" role="tab" id="skills-tab-graph" aria-controls="skills-panel-graph" aria-selected="false" class="skills-tab px-4 py-2 text-sm font-semibold rounded-md transition-colors text-text-muted hover:text-text-main dark:text-gray-400 dark:hover:text-white">Graph</button>
+                                <button type="button" role="tab" id="skills-tab-list" aria-controls="skills-panel-list" aria-selected="true" class="skills-tab px-4 py-2 text-sm font-semibold rounded-md transition-colors text-text-muted hover:text-text-main dark:text-gray-400 dark:hover:text-white">List</button>
+                            </div>
+                            <!-- Hidden until JS confirms it can draw. If the script fails the list simply
+                                 stays, rather than leaving an empty box where the skills should be. -->
+                            <div id="skills-panel-graph" role="tabpanel" aria-labelledby="skills-tab-graph" hidden>
+                                <div class="skills-graph-wrap mt-6 rounded-2xl border border-border-light bg-background-alt/60 dark:border-gray-700 dark:bg-gray-800/40">
+                                    <svg id="skills-graph" role="img" aria-label="Skills shown as a connected graph. The same information is available in the List view."
+                                        viewBox="0 0 820 600" class="h-auto w-full touch-none select-none"></svg>
+                                </div>
+                            </div>
+                            <div id="skills-panel-list" role="tabpanel" aria-labelledby="skills-tab-list">
+<div id="skills-groups" class="mt-10 divide-y divide-border-light dark:divide-gray-800">
                             <div class="skill-group py-5 first:pt-0">
                                 <p class="text-xs font-bold uppercase tracking-wider text-text-muted dark:text-gray-500">Languages</p>
                                 <p class="mt-2 text-[15px] leading-7 text-text-main dark:text-gray-300">
@@ -665,6 +683,8 @@
                                     dark:text-gray-700" aria-hidden="true">·</span>QA process<span class="mx-1.5 text-slate-300
                                     dark:text-gray-700" aria-hidden="true">·</span>Documentation
                                 </p>
+                            </div>
+                        </div>
                             </div>
                         </div>
                         </div>
