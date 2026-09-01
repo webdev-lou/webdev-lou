@@ -79,7 +79,7 @@
         }
     </script>
     <link rel="canonical" href="https://www.webdev-lou.com/" />
-    <link rel="stylesheet" href="css/style.css?v=1.8">
+    <link rel="stylesheet" href="css/style.css?v=1.9">
 </head>
 
 <body
@@ -88,7 +88,7 @@
         <div id="header-placeholder"></div>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script src="js/header.js?v=1.5"></script>
-        <script src="js/main.js?v=1.7"></script>
+        <script src="js/main.js?v=1.8"></script>
         <main class="flex-1 pt-16">
             <section
                 class="relative overflow-hidden bg-background-light pt-16 pb-20 lg:pt-24 lg:pb-28 dark:bg-background-dark">
@@ -472,48 +472,102 @@
                              for screen readers even when off-screen. -->
                         <div id="exp-track" tabindex="0" role="group" aria-label="Work history, scrolls horizontally"
                             class="scrollbar-hide -mx-4 flex snap-x snap-mandatory scroll-pl-4 gap-6 overflow-x-auto scroll-smooth px-4 pb-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 dark:focus-visible:ring-offset-background-dark">
-                            <article class="snap-start shrink-0 w-[290px] sm:w-[330px] border-l-4 border-primary bg-background-alt/60 p-6 rounded-r-xl dark:bg-gray-800/50">
-                                <div class="mb-2 flex items-center gap-2">
-                                    <p class="text-primary font-medium text-sm">Digital Pie • 2025 - Present</p>
-                                    <span class="rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">Current</span>
+                            <article class="exp-item snap-start shrink-0 w-[268px] sm:w-[300px]">
+                                <!-- The rail bridges the 24px flex gap via right-[-24px] so it reads as one
+                                     continuous line across cards; the final item stops at its own edge. -->
+                                <div class="relative mb-5 h-4">
+                                    <span aria-hidden="true"
+                                        class="absolute left-0 right-[-24px] top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-slate-300 dark:bg-gray-600"></span>
+                                    <span aria-hidden="true"
+                                        class="exp-node exp-node--current absolute left-0 top-1/2 h-4 w-4 -translate-y-1/2 rounded-full bg-primary ring-4 ring-background-light dark:ring-background-dark"></span>
                                 </div>
-                                <h3 class="text-lg font-bold text-text-main mb-2 dark:text-white">Web Development Team Lead</h3>
-                                <p class="text-text-muted text-sm leading-relaxed dark:text-gray-400">Leading a team of five developers at Digital Pie, I architect secure, high-performance WordPress solutions while mentoring the team to drive technical excellence and operational efficiency.</p>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-primary">2025 - Present</p>
+                                    <span class="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-primary dark:bg-primary/20">Current</span>
+                                </div>
+                                <h3 class="exp-title text-lg font-bold text-text-main leading-snug transition-colors dark:text-white">Web Development Team Lead</h3>
+                                <p class="mt-0.5 text-sm font-medium text-text-muted dark:text-gray-400">Digital Pie</p>
+                                <p class="mt-3 text-sm leading-relaxed text-text-muted dark:text-gray-400">Leading a team of five developers at Digital Pie, I architect secure, high-performance WordPress solutions while mentoring the team to drive technical excellence and operational efficiency.</p>
                             </article>
-                            <article class="snap-start shrink-0 w-[290px] sm:w-[330px] border-l-4 border-primary bg-background-alt/60 p-6 rounded-r-xl dark:bg-gray-800/50">
-                                <div class="mb-2 flex items-center gap-2">
-                                    <p class="text-primary font-medium text-sm">Self-Employed • 2024 - 2025</p>
+                            <article class="exp-item snap-start shrink-0 w-[268px] sm:w-[300px]">
+                                <!-- The rail bridges the 24px flex gap via right-[-24px] so it reads as one
+                                     continuous line across cards; the final item stops at its own edge. -->
+                                <div class="relative mb-5 h-4">
+                                    <span aria-hidden="true"
+                                        class="absolute left-0 right-[-24px] top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-slate-300 dark:bg-gray-600"></span>
+                                    <span aria-hidden="true"
+                                        class="exp-node absolute left-0 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-border-light ring-4 ring-background-light dark:bg-gray-600 dark:ring-background-dark"></span>
                                 </div>
-                                <h3 class="text-lg font-bold text-text-main mb-2 dark:text-white">Freelance Web Developer</h3>
-                                <p class="text-text-muted text-sm leading-relaxed dark:text-gray-400">Delivered web solutions for 6 clients at 99.9% uptime, specializing in WordPress child themes and Shopify theme customization, pixel-perfect design implementation, and high-performance site maintenance.</p>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-primary">2024 - 2025</p>
+                                </div>
+                                <h3 class="exp-title text-lg font-bold text-text-main leading-snug transition-colors dark:text-white">Freelance Web Developer</h3>
+                                <p class="mt-0.5 text-sm font-medium text-text-muted dark:text-gray-400">Self-Employed</p>
+                                <p class="mt-3 text-sm leading-relaxed text-text-muted dark:text-gray-400">Delivered web solutions for 6 clients at 99.9% uptime, specializing in WordPress child themes and Shopify theme customization, pixel-perfect design implementation, and high-performance site maintenance.</p>
                             </article>
-                            <article class="snap-start shrink-0 w-[290px] sm:w-[330px] border-l-4 border-primary bg-background-alt/60 p-6 rounded-r-xl dark:bg-gray-800/50">
-                                <div class="mb-2 flex items-center gap-2">
-                                    <p class="text-primary font-medium text-sm">Roger Roger Marketing • 2020 - 2024</p>
+                            <article class="exp-item snap-start shrink-0 w-[268px] sm:w-[300px]">
+                                <!-- The rail bridges the 24px flex gap via right-[-24px] so it reads as one
+                                     continuous line across cards; the final item stops at its own edge. -->
+                                <div class="relative mb-5 h-4">
+                                    <span aria-hidden="true"
+                                        class="absolute left-0 right-[-24px] top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-slate-300 dark:bg-gray-600"></span>
+                                    <span aria-hidden="true"
+                                        class="exp-node absolute left-0 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-border-light ring-4 ring-background-light dark:bg-gray-600 dark:ring-background-dark"></span>
                                 </div>
-                                <h3 class="text-lg font-bold text-text-main mb-2 dark:text-white">Web Development Manager</h3>
-                                <p class="text-text-muted text-sm leading-relaxed dark:text-gray-400">Led a team of 2 junior developers, shipping 100+ client websites and landing pages over four years using Divi, Elementor, and ACF — with technical SEO implementation and DNS configuration on every build.</p>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-primary">2020 - 2024</p>
+                                </div>
+                                <h3 class="exp-title text-lg font-bold text-text-main leading-snug transition-colors dark:text-white">Web Development Manager</h3>
+                                <p class="mt-0.5 text-sm font-medium text-text-muted dark:text-gray-400">Roger Roger Marketing</p>
+                                <p class="mt-3 text-sm leading-relaxed text-text-muted dark:text-gray-400">Led a team of 2 junior developers, shipping 100+ client websites and landing pages over four years using Divi, Elementor, and ACF — with technical SEO implementation and DNS configuration on every build.</p>
                             </article>
-                            <article class="snap-start shrink-0 w-[290px] sm:w-[330px] border-l-4 border-primary bg-background-alt/60 p-6 rounded-r-xl dark:bg-gray-800/50">
-                                <div class="mb-2 flex items-center gap-2">
-                                    <p class="text-primary font-medium text-sm">Speakers Institute • 2018 - 2020</p>
+                            <article class="exp-item snap-start shrink-0 w-[268px] sm:w-[300px]">
+                                <!-- The rail bridges the 24px flex gap via right-[-24px] so it reads as one
+                                     continuous line across cards; the final item stops at its own edge. -->
+                                <div class="relative mb-5 h-4">
+                                    <span aria-hidden="true"
+                                        class="absolute left-0 right-[-24px] top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-slate-300 dark:bg-gray-600"></span>
+                                    <span aria-hidden="true"
+                                        class="exp-node absolute left-0 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-border-light ring-4 ring-background-light dark:bg-gray-600 dark:ring-background-dark"></span>
                                 </div>
-                                <h3 class="text-lg font-bold text-text-main mb-2 dark:text-white">Full-stack Developer</h3>
-                                <p class="text-text-muted text-sm leading-relaxed dark:text-gray-400">Directed the front-end and back-end web operations for Speakers Institute, building and running an LMS serving 100+ students, alongside system integrations and performance optimization.</p>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-primary">2018 - 2020</p>
+                                </div>
+                                <h3 class="exp-title text-lg font-bold text-text-main leading-snug transition-colors dark:text-white">Full-stack Developer</h3>
+                                <p class="mt-0.5 text-sm font-medium text-text-muted dark:text-gray-400">Speakers Institute</p>
+                                <p class="mt-3 text-sm leading-relaxed text-text-muted dark:text-gray-400">Directed the front-end and back-end web operations for Speakers Institute, building and running an LMS serving 100+ students, alongside system integrations and performance optimization.</p>
                             </article>
-                            <article class="snap-start shrink-0 w-[290px] sm:w-[330px] border-l-4 border-primary bg-background-alt/60 p-6 rounded-r-xl dark:bg-gray-800/50">
-                                <div class="mb-2 flex items-center gap-2">
-                                    <p class="text-primary font-medium text-sm">Transformational Outsourcing • 2014 - 2018</p>
+                            <article class="exp-item snap-start shrink-0 w-[268px] sm:w-[300px]">
+                                <!-- The rail bridges the 24px flex gap via right-[-24px] so it reads as one
+                                     continuous line across cards; the final item stops at its own edge. -->
+                                <div class="relative mb-5 h-4">
+                                    <span aria-hidden="true"
+                                        class="absolute left-0 right-[-24px] top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-slate-300 dark:bg-gray-600"></span>
+                                    <span aria-hidden="true"
+                                        class="exp-node absolute left-0 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-border-light ring-4 ring-background-light dark:bg-gray-600 dark:ring-background-dark"></span>
                                 </div>
-                                <h3 class="text-lg font-bold text-text-main mb-2 dark:text-white">Web Developer</h3>
-                                <p class="text-text-muted text-sm leading-relaxed dark:text-gray-400">Built WordPress themes, widgets, and plugins, converted PSD mockups into production websites, and configured servers and DNS records — while leading content migration across concurrent redesign projects.</p>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-primary">2014 - 2018</p>
+                                </div>
+                                <h3 class="exp-title text-lg font-bold text-text-main leading-snug transition-colors dark:text-white">Web Developer</h3>
+                                <p class="mt-0.5 text-sm font-medium text-text-muted dark:text-gray-400">Transformational Outsourcing</p>
+                                <p class="mt-3 text-sm leading-relaxed text-text-muted dark:text-gray-400">Built WordPress themes, widgets, and plugins, converted PSD mockups into production websites, and configured servers and DNS records — while leading content migration across concurrent redesign projects.</p>
                             </article>
-                            <article class="snap-start shrink-0 w-[290px] sm:w-[330px] border-l-4 border-primary bg-background-alt/60 p-6 rounded-r-xl dark:bg-gray-800/50">
-                                <div class="mb-2 flex items-center gap-2">
-                                    <p class="text-primary font-medium text-sm">JetFlight Aviation Services • 2013</p>
+                            <article class="exp-item snap-start shrink-0 w-[268px] sm:w-[300px]">
+                                <!-- The rail bridges the 24px flex gap via right-[-24px] so it reads as one
+                                     continuous line across cards; the final item stops at its own edge. -->
+                                <div class="relative mb-5 h-4">
+                                    <span aria-hidden="true"
+                                        class="absolute left-0 right-0 top-1/2 h-0.5 -translate-y-1/2 rounded-full bg-gradient-to-r from-slate-300 to-transparent dark:from-gray-600"></span>
+                                    <span aria-hidden="true"
+                                        class="exp-node absolute left-0 top-1/2 h-3 w-3 -translate-y-1/2 rounded-full bg-border-light ring-4 ring-background-light dark:bg-gray-600 dark:ring-background-dark"></span>
                                 </div>
-                                <h3 class="text-lg font-bold text-text-main mb-2 dark:text-white">Web Developer</h3>
-                                <p class="text-text-muted text-sm leading-relaxed dark:text-gray-400">Built an interactive company website with a custom admin control panel, database, and e-commerce store.</p>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <p class="text-sm font-bold text-primary">2013</p>
+                                </div>
+                                <h3 class="exp-title text-lg font-bold text-text-main leading-snug transition-colors dark:text-white">Web Developer</h3>
+                                <p class="mt-0.5 text-sm font-medium text-text-muted dark:text-gray-400">JetFlight Aviation Services</p>
+                                <p class="mt-3 text-sm leading-relaxed text-text-muted dark:text-gray-400">Built an interactive company website with a custom admin control panel, database, and e-commerce store.</p>
                             </article>
                         </div>
                         <div class="mt-20">

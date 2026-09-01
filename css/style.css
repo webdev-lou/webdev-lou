@@ -184,3 +184,57 @@ body {
         scroll-behavior: auto;
     }
 }
+
+/* ============================================
+   Experience timeline (horizontal)
+   ============================================ */
+
+.exp-node {
+    transition: transform .25s ease, background-color .25s ease;
+}
+
+.exp-item:hover .exp-node {
+    transform: translateY(-50%) scale(1.35);
+    background-color: #2563eb;
+}
+
+.exp-item:hover .exp-title {
+    color: #2563eb;
+}
+
+.dark .exp-item:hover .exp-node,
+.dark .exp-item:hover .exp-title {
+    color: #3b82f6;
+}
+
+.dark .exp-item:hover .exp-node {
+    background-color: #3b82f6;
+}
+
+/* Soft halo on the current role so the eye lands on it first. */
+.exp-node--current::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: 9999px;
+    background: #2563eb;
+    opacity: .18;
+    animation: expPulse 2.8s ease-in-out infinite;
+}
+
+@keyframes expPulse {
+    0%, 100% { transform: scale(1);    opacity: .18; }
+    50%      { transform: scale(1.35); opacity: .05; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .exp-node,
+    .exp-title {
+        transition: none;
+    }
+
+    .exp-node--current::after {
+        animation: none;
+    }
+}
