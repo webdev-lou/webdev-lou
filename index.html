@@ -79,7 +79,7 @@
         }
     </script>
     <link rel="canonical" href="https://www.webdev-lou.com/" />
-    <link rel="stylesheet" href="css/style.css?v=1.5">
+    <link rel="stylesheet" href="css/style.css?v=1.6">
 </head>
 
 <body
@@ -93,7 +93,10 @@
             <section
                 class="relative overflow-hidden bg-background-light pt-16 pb-20 lg:pt-24 lg:pb-28 dark:bg-background-dark">
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-                    <div class="max-w-3xl">
+                    <!-- 1216px container - 400px graphic - 48px gap = 768px, exactly the
+                         max-w-3xl the copy already had, so the heading keeps its wrapping. -->
+                    <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_400px] lg:gap-12 lg:items-center">
+                        <div class="max-w-3xl">
                         <h1
                             class="text-4xl font-extrabold tracking-tight text-text-main sm:text-5xl lg:text-6xl mb-6 dark:text-white">
                             <!-- nbsp binds "&" to "Team" so the line cannot break after the
@@ -114,6 +117,67 @@
                                 href="/Marlou-Mupas-Resume-2026-designed.pdf" target="_blank">
                                 Download CV
                             </a>
+                        </div>
+                    </div>
+                        <!-- Decorative only, so aria-hidden: it repeats nothing the copy
+                             does not already say. Hidden below lg because the whitespace
+                             it fills only exists on wide screens. -->
+                        <div class="hero-anim hidden lg:block" aria-hidden="true">
+                            <svg viewBox="0 0 400 380" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                class="h-auto w-full">
+                                <defs>
+                                    <!-- Radial fade rather than a flat circle: a hard edge cut
+                                         awkwardly across the window behind it. -->
+                                    <radialGradient id="heroGlow" cx="50%" cy="50%" r="50%">
+                                        <stop offset="0%" stop-color="var(--accent)" stop-opacity=".28" />
+                                        <stop offset="60%" stop-color="var(--accent)" stop-opacity=".12" />
+                                        <stop offset="100%" stop-color="var(--accent)" stop-opacity="0" />
+                                    </radialGradient>
+                                </defs>
+                                <circle class="hero-anim__pulse" cx="210" cy="180" r="165" fill="url(#heroGlow)" />
+                                <g class="hero-anim__window">
+                                    <rect x="30" y="40" width="340" height="262" rx="16" fill="var(--win-bg)"
+                                        stroke="var(--win-border)" stroke-width="2" />
+                                    <circle cx="56" cy="66" r="5" fill="var(--dot)" />
+                                    <circle cx="74" cy="66" r="5" fill="var(--dot)" />
+                                    <circle cx="92" cy="66" r="5" fill="var(--dot)" />
+                                    <line x1="30" y1="88" x2="370" y2="88" stroke="var(--win-border)"
+                                        stroke-width="2" />
+                                    <rect class="hero-anim__line" x="56" y="110" width="92" height="9" rx="4.5"
+                                        fill="var(--accent)" />
+                                    <rect class="hero-anim__line" x="74" y="134" width="142" height="9" rx="4.5"
+                                        fill="var(--bar)" />
+                                    <rect class="hero-anim__line" x="74" y="158" width="112" height="9" rx="4.5"
+                                        fill="var(--bar-strong)" />
+                                    <rect class="hero-anim__line" x="56" y="182" width="72" height="9" rx="4.5"
+                                        fill="var(--accent)" />
+                                    <rect class="hero-anim__line" x="74" y="206" width="164" height="9" rx="4.5"
+                                        fill="var(--bar)" />
+                                    <rect class="hero-anim__line" x="74" y="230" width="122" height="9" rx="4.5"
+                                        fill="var(--bar-strong)" />
+                                    <rect class="hero-anim__line" x="56" y="254" width="98" height="9" rx="4.5"
+                                        fill="var(--bar)" />
+                                    <rect class="hero-anim__line" x="56" y="278" width="60" height="9" rx="4.5"
+                                        fill="var(--accent)" />
+                                    <rect class="hero-anim__cursor" x="124" y="275" width="3" height="15"
+                                        fill="var(--accent)" />
+                                </g>
+                                <g class="hero-anim__chip">
+                                    <rect x="286" y="18" width="76" height="52" rx="14" fill="var(--accent)" />
+                                    <g stroke="#ffffff" stroke-width="3" stroke-linecap="round"
+                                        stroke-linejoin="round" fill="none">
+                                        <polyline points="313,36 305,44 313,52" />
+                                        <polyline points="335,36 343,44 335,52" />
+                                        <line x1="327" y1="33" x2="321" y2="55" />
+                                    </g>
+                                </g>
+                                <g class="hero-anim__chip hero-anim__chip--b">
+                                    <rect x="24" y="292" width="104" height="46" rx="14" fill="var(--win-bg)"
+                                        stroke="var(--win-border)" stroke-width="2" />
+                                    <circle cx="48" cy="315" r="7" fill="var(--accent)" />
+                                    <rect x="64" y="311" width="44" height="8" rx="4" fill="var(--bar)" />
+                                </g>
+                            </svg>
                         </div>
                     </div>
                     <div class="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-3 lg:max-w-4xl">

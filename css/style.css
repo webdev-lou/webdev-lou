@@ -1,6 +1,6 @@
 /* ============================================
    Portfolio - Custom Styles
-   Version: 1.0
+   Version: 1.6
    ============================================ */
 
 body {
@@ -9,4 +9,120 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
+}
+
+/* ============================================
+   Hero animation — inline SVG, no JS library.
+
+   Deliberately not Lottie: lottie-web is ~250KB before the animation JSON,
+   on a page that advertises Lighthouse 99 and a 0.7s Speed Index. A CDN copy
+   would also be blocked by this site's CSP (script-src 'self' plus a short
+   allowlist). This costs a few KB and no extra request.
+   ============================================ */
+
+.hero-anim {
+    --win-bg: #ffffff;
+    --win-border: #e2e8f0;
+    --bar: #e2e8f0;
+    --bar-strong: #cbd5e1;
+    --accent: #2563eb;
+    --dot: #cbd5e1;
+}
+
+.dark .hero-anim {
+    --win-bg: #1f2937;
+    --win-border: #374151;
+    --bar: #374151;
+    --bar-strong: #4b5563;
+    --accent: #3b82f6;
+    --dot: #4b5563;
+}
+
+.hero-anim__window {
+    animation: heroFloat 7s ease-in-out infinite;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+
+/* Each bar types itself in, left to right, then clears so the loop restarts.
+   transform-box: fill-box makes transform-origin resolve against the rect's
+   own box rather than the SVG viewport, which is what keeps them anchored to
+   their own left edge instead of sliding across the window. */
+.hero-anim__line {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: heroType 7s ease-in-out infinite;
+}
+
+.hero-anim__line:nth-of-type(1) { animation-delay: 0s; }
+.hero-anim__line:nth-of-type(2) { animation-delay: .18s; }
+.hero-anim__line:nth-of-type(3) { animation-delay: .36s; }
+.hero-anim__line:nth-of-type(4) { animation-delay: .54s; }
+.hero-anim__line:nth-of-type(5) { animation-delay: .72s; }
+.hero-anim__line:nth-of-type(6) { animation-delay: .90s; }
+.hero-anim__line:nth-of-type(7) { animation-delay: 1.08s; }
+.hero-anim__line:nth-of-type(8) { animation-delay: 1.26s; }
+
+.hero-anim__cursor {
+    animation: heroBlink 1.1s steps(1, end) infinite;
+}
+
+.hero-anim__chip {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: heroDrift 9s ease-in-out infinite;
+}
+
+.hero-anim__chip--b {
+    animation-duration: 11s;
+    animation-delay: -3s;
+}
+
+.hero-anim__pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: heroPulse 7s ease-in-out infinite;
+}
+
+@keyframes heroType {
+    0%        { transform: scaleX(0); opacity: 0; }
+    9%        { transform: scaleX(1); opacity: 1; }
+    78%       { transform: scaleX(1); opacity: 1; }
+    88%, 100% { transform: scaleX(0); opacity: 0; }
+}
+
+@keyframes heroFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+}
+
+@keyframes heroDrift {
+    0%, 100% { transform: translate(0, 0); }
+    50%      { transform: translate(0, -14px); }
+}
+
+@keyframes heroPulse {
+    0%, 100% { opacity: .75; transform: scale(1); }
+    50%      { opacity: 1;   transform: scale(1.06); }
+}
+
+@keyframes heroBlink {
+    0%, 49%   { opacity: 1; }
+    50%, 100% { opacity: 0; }
+}
+
+/* Respect the OS setting. Every animated element must settle in its FINISHED
+   state, not its first keyframe — otherwise the code bars stay at scaleX(0)
+   and the window renders empty. */
+@media (prefers-reduced-motion: reduce) {
+
+    .hero-anim__window,
+    .hero-anim__line,
+    .hero-anim__cursor,
+    .hero-anim__chip,
+    .hero-anim__pulse {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
 }
