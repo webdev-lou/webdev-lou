@@ -170,10 +170,6 @@ body {
         transition: none;
         transition-delay: 0s;
     }
-
-    .skill-chip {
-        transition: none;
-    }
 }
 
 /* Horizontal experience slider: honour the OS motion setting for the smooth
