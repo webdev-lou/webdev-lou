@@ -126,3 +126,52 @@ body {
         transform: none;
     }
 }
+
+/* ============================================
+   Technical Skills — staggered reveal on scroll
+   ============================================ */
+
+/* Progressive enhancement: the hidden state applies only once JS has added
+   .skills-anim. If the script never runs, or IntersectionObserver is missing,
+   the chips are simply visible rather than permanently invisible. */
+.skill-group {
+    transition: opacity .5s ease, transform .5s ease;
+}
+
+.skills-anim .skill-group {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.skills-anim.skills-visible .skill-group {
+    opacity: 1;
+    transform: none;
+}
+
+/* Stagger by group rather than by chip: 53 individual delays would take
+   several seconds to finish and read as sluggish. */
+.skills-anim.skills-visible .skill-group:nth-child(1) { transition-delay: 0s; }
+.skills-anim.skills-visible .skill-group:nth-child(2) { transition-delay: .07s; }
+.skills-anim.skills-visible .skill-group:nth-child(3) { transition-delay: .14s; }
+.skills-anim.skills-visible .skill-group:nth-child(4) { transition-delay: .21s; }
+.skills-anim.skills-visible .skill-group:nth-child(5) { transition-delay: .28s; }
+.skills-anim.skills-visible .skill-group:nth-child(6) { transition-delay: .35s; }
+.skills-anim.skills-visible .skill-group:nth-child(7) { transition-delay: .42s; }
+.skills-anim.skills-visible .skill-group:nth-child(8) { transition-delay: .49s; }
+.skills-anim.skills-visible .skill-group:nth-child(9) { transition-delay: .56s; }
+
+@media (prefers-reduced-motion: reduce) {
+
+    .skill-group,
+    .skills-anim .skill-group,
+    .skills-anim.skills-visible .skill-group {
+        opacity: 1;
+        transform: none;
+        transition: none;
+        transition-delay: 0s;
+    }
+
+    .skill-chip {
+        transition: none;
+    }
+}

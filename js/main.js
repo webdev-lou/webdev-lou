@@ -9,6 +9,43 @@ document.addEventListener('DOMContentLoaded', function () {
     const submitBtn = document.getElementById('submit-btn');
     const formMessage = document.getElementById('form-message');
 
+    // Reveal the skills groups when they scroll into view. The hidden state is
+    // added here rather than in the stylesheet so that a browser without
+    // IntersectionObserver — or with JS off — shows the chips normally instead
+    // of leaving them permanently at opacity 0.
+    var skillGroups = document.getElementById('skills-groups');
+    if (skillGroups && 'IntersectionObserver' in window) {
+        skillGroups.classList.add('skills-anim');
+
+        var revealSkills = function () {
+            skillGroups.classList.add('skills-visible');
+        };
+
+        // Failsafe. Feature-detecting IntersectionObserver covers the case where
+        // it is missing, but not the case where it exists and never delivers a
+        // callback — some embedded webviews and headless browsers behave exactly
+        // that way. Without this the chips would stay at opacity 0 for good.
+        // Content must never depend on a decorative trigger firing.
+        var skillFailsafe = setTimeout(revealSkills, 3000);
+
+        var skillObserver = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    revealSkills();
+                    clearTimeout(skillFailsafe);
+                    skillObserver.disconnect();
+                }
+            });
+            // threshold 0, not a fraction: this box is taller than the viewport
+            // and grows as chips wrap on narrow screens. A fractional threshold
+            // becomes unreachable once the element exceeds 1/threshold viewport
+            // heights, and the chips would then stay invisible for good. The
+            // negative bottom margin just delays the trigger until it is
+            // properly in view rather than clipping the very first pixel.
+        }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+        skillObserver.observe(skillGroups);
+    }
+
     // A reCAPTCHA token is single-use and is consumed by the server on every
     // submit, including failed ones. Without this reset, a visitor who hits any
     // error - a validation message, a rate limit - would resubmit the spent
