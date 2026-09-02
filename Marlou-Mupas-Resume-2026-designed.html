@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Marlou Mupas — Resume</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light only;
+  --ink:#111417;          /* headings */
+  --body:#2f353b;         /* body copy */
+  --muted:#767d86;        /* dates, secondary */
+  --accent:#1a5a6e;       /* petrol - single accent */
+  --accent-soft:#e4eef1;
+  --rule:#dfe3e7;
+  --display:"Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --sans:"Inter","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+@page{ size: Letter; margin: 0.46in 0.6in; }
+*{box-sizing:border-box;}
+html{background:#fff;}
+body{
+  background:#fff; color:var(--body);
+  font-family:var(--sans); font-size:9.9pt; line-height:1.42;
+  margin:0 auto; max-width:7.5in; padding:.5in .35in;
+  -webkit-font-smoothing:antialiased;
+}
+b,strong{ font-weight:650; color:var(--ink); }
+
+/* ─── header ─────────────────────────────────────────── */
+.top{ border-top:2.5px solid var(--accent); padding-top:13px; }
+.hdr{ display:flex; justify-content:space-between; align-items:flex-end; gap:26px; }
+h1{
+  font-family:var(--display); font-weight:700; font-size:29pt;
+  letter-spacing:-.021em; line-height:.98; margin:0; color:var(--ink);
+}
+.tagline{
+  font-family:var(--mono); font-size:8.1pt; font-weight:500;
+  letter-spacing:.06em; text-transform:uppercase;
+  color:var(--accent); margin-top:7px;
+}
+.contact{ text-align:right; font-size:8.9pt; line-height:1.62; color:var(--muted); white-space:nowrap; }
+.contact .em{ color:var(--body); font-weight:500; }
+.contact a{ color:inherit; text-decoration:none; }
+
+/* ─── section headings ───────────────────────────────── */
+h2{
+  font-family:var(--mono); font-size:8pt; font-weight:600;
+  letter-spacing:0; text-transform:uppercase; color:var(--accent);
+  margin:11px 0 6.5px; padding:0; position:relative; display:block;
+  page-break-after:avoid; break-after:avoid;
+}
+h2::before{ content:""; position:absolute; left:0; right:0; top:52%;
+            height:1px; background:var(--rule); }
+h2 span{ position:relative; background:#fff; padding-right:11px; }
+
+/* ─── summary ────────────────────────────────────────── */
+.summary{ margin:0; font-size:10pt; line-height:1.45; color:var(--body); }
+
+/* ─── skills ─────────────────────────────────────────── */
+.skills{ margin:0; }
+.srow{ display:flex; gap:12px; margin-bottom:3px; align-items:baseline; }
+.slabel{
+  font-family:var(--mono); font-size:7.5pt; font-weight:500;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--ink);
+  flex:0 0 1.30in; line-height:1.48; padding-top:1px;
+}
+.sval{ flex:1; font-size:9.3pt; line-height:1.43; color:var(--body); }
+
+/* ─── experience ─────────────────────────────────────── */
+.job{ break-inside:auto; margin-top:9px; }
+.jhead+ul li:first-child, .jsub+ul li:first-child{ break-before:avoid; }
+.job:first-of-type{ margin-top:0; }
+.jhead{ display:flex; justify-content:space-between; align-items:baseline; gap:16px;
+        page-break-after:avoid; break-after:avoid; }
+ul{ orphans:2; widows:2; }
+.jtitle{ font-family:var(--display); font-weight:600; font-size:11pt;
+         color:var(--ink); letter-spacing:-.006em; }
+.jorg{ font-weight:500; color:var(--accent); }
+.jdate{ font-family:var(--mono); font-size:7.9pt; font-weight:400; letter-spacing:.045em;
+        color:var(--muted); white-space:nowrap; }
+.jsub{ font-family:var(--mono); font-size:7.7pt; color:var(--muted);
+       letter-spacing:.03em; margin-top:3px; page-break-after:avoid; }
+
+ul{ list-style:none; margin:6px 0 0; padding:0; }
+li{ position:relative; margin-bottom:2.7px; line-height:1.43; padding-left:14px;
+    page-break-inside:avoid; break-inside:avoid; orphans:2; widows:2; }
+li::before{ content:""; position:absolute; left:0; top:.6em;
+            width:6px; height:1.4px; background:var(--accent); opacity:.55; }
+
+/* ─── earlier ────────────────────────────────────────── */
+.early{ }
+.ecol{ margin-bottom:4px; }
+.ehead{ display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+.etitle{ font-family:var(--display); font-weight:600; font-size:9.6pt; color:var(--ink); }
+.edate{ font-family:var(--mono); font-size:7.4pt; color:var(--muted); white-space:nowrap; }
+.eorg{ color:var(--accent); font-weight:500; }
+.edesc{ font-size:8.9pt; line-height:1.4; color:var(--body); margin-top:2px; }
+
+@media print{ body{ padding:0; max-width:none; } }
+</style></head><body>
+
+<div class="top">
+  <div class="hdr">
+    <div>
+      <h1>Marlou Mupas</h1>
+      <div class="tagline">Senior Web Developer · Team Lead</div>
+    </div>
+    <div class="contact">
+      <div class="em"><a href="mailto:hello@webdev-lou.com">hello@webdev-lou.com</a></div>
+      <div>(+63) 969 417 0149</div>
+      <div><a href="https://www.linkedin.com/in/marlouei/">linkedin.com/in/marlouei</a> &nbsp;·&nbsp; <a href="https://webdev-lou.com/">webdev-lou.com</a></div>
+      <div>Mabalacat City, Pampanga, Philippines</div>
+    </div>
+  </div>
+</div>
+
+<h2><span>Summary</span></h2>
+<p class="summary">Web developer with <b>15+ years</b> building and maintaining production websites and e-commerce platforms. Currently lead a team of <b>5 developers</b> managing <b>300+ client websites</b> and <b>50+ monthly retainer accounts</b>. Rebuilt the company's flagship site with <b>Claude Code</b>, lifting its Lighthouse score from the 60s on desktop and 40s on mobile to <b>99 on both</b>, with a <b>0.7s Speed Index</b>. Previously built a Learning Management System with subscription checkout that onboarded <b>100+ students</b>.</p>
+
+<h2><span>Skills</span></h2>
+<div class="skills">
+  <div class="srow"><div class="slabel">Languages</div><div class="sval">PHP, JavaScript, HTML5, CSS3, SQL</div></div>
+  <div class="srow"><div class="slabel">WordPress / E-comm</div><div class="sval">Child themes, theme customization, custom plugin development, ACF, Divi, Elementor, Breakdance, WPBakery, WooCommerce, Shopify, Squarespace, BigCommerce</div></div>
+  <div class="srow"><div class="slabel">Front-End</div><div class="sval">Responsive design, cross-browser compatibility, Figma / XD / PSD / Claude Design / Google Stitch / Google AI Studio to production, Bootstrap</div></div>
+  <div class="srow"><div class="slabel">Performance</div><div class="sval">Core Web Vitals, Lighthouse and PageSpeed optimization, caching, load-time troubleshooting</div></div>
+  <div class="srow"><div class="slabel">SEO (implementation)</div><div class="sval">On-site technical fixes, heading and meta structure, site audits, Google Analytics — delivered to specialist requirements</div></div>
+  <div class="srow"><div class="slabel">Hosting / Infra</div><div class="sval">Cloudways, WP Engine, SiteGround, Hostinger, GoDaddy, Bluehost, cPanel; DNS via Cloudflare, DNSimple, Dreamscape (NS, A, CNAME, MX); email hosting via Zoho Mail and Google Workspace; backups, uptime monitoring, server troubleshooting</div></div>
+  <div class="srow"><div class="slabel">CRM / Business</div><div class="sval">Zoho CRM, Zoho Projects, Ontraport</div></div>
+  <div class="srow"><div class="slabel">Security</div><div class="sval">Plugin and dependency audits, vulnerability response, server hardening</div></div>
+  <div class="srow"><div class="slabel">AI-Assisted Dev</div><div class="sval">Claude Code, Claude CLI, Gemini CLI, MCP, Agent Skills, Google Antigravity — used for full site rebuilds, plugin work, debugging, and log analysis</div></div>
+  <div class="srow"><div class="slabel">Version Control</div><div class="sval">Git, GitHub</div></div>
+  <div class="srow"><div class="slabel">Leadership</div><div class="sval">Team management, task allocation, mentoring, coding standards, QA process, documentation</div></div>
+</div>
+
+<h2><span>Experience</span></h2>
+
+<div class="job">
+  <div class="jhead"><div class="jtitle">Web Development Team Lead <span class="jorg">— Digital Pie</span></div><div class="jdate">JUL 2025 — PRESENT</div></div>
+  <ul>
+    <li>Lead a team of <b>5 developers</b> (1 senior, 1 mid-level, 3 junior), allocating work by skill and availability and mentoring the four junior and mid-level developers.</li>
+    <li>Own reliability across <b>300+ client websites</b> and <b>50+ monthly retainer accounts</b>, covering updates, backups, uptime monitoring, and incident response across Cloudways, Cloudflare, and DNSimple.</li>
+    <li>Rebuilt the company website end to end using <b>Claude Code</b>, raising Lighthouse from the 60s on desktop and 40s on mobile to <b>99 on both</b> and achieving a <b>0.7s Speed Index</b> on PageSpeed Insights.</li>
+    <li>Diagnosed the bottlenecks in the site delivery process and rebuilt it end to end — setup, pre-launch, and post-launch — introducing QA checklists, coding standards, and documentation that catch issues before handover to the client.</li>
+    <li>Built an internal WordPress plugin that tracks pre- and post-launch checklist progress in one view, logs which developer signed off each item, and emails status to the team and managers — giving the team an audit trail to trace any post-launch issue back to its source.</li>
+    <li>Implement technical SEO fixes from specialist requirements and automated site audits; coordinate off-site link building with marketing.</li>
+    <li>Harden sites and servers through plugin audits, vulnerability patching, and security best practices.</li>
+    <li>Rolled AI-assisted development (Claude Code, MCP) out across the team for debugging, log analysis, and faster delivery.</li>
+  </ul>
+</div>
+
+<div class="job">
+  <div class="jhead"><div class="jtitle">Web Developer <span class="jorg">— Freelance</span></div><div class="jdate">NOV 2024 — JUL 2025</div></div>
+  <ul>
+    <li>Delivered custom web solutions for <b>6 clients</b> across WordPress and Shopify.</li>
+    <li>Customized and extended an existing Shopify theme for a fashion startup — fully responsive, with third-party app integrations.</li>
+    <li>Developed a bespoke WordPress site with custom functionality for a corporate blog, improving content management and user engagement.</li>
+    <li>Provided ongoing maintenance, security audits, and performance optimization, sustaining <b>99.9% uptime</b>.</li>
+    <li>Translated Figma and Adobe XD mockups into pixel-accurate, responsive interfaces.</li>
+  </ul>
+</div>
+
+<div class="job">
+  <div class="jhead"><div class="jtitle">Web Development Manager <span class="jorg">— Roger Roger Marketing</span></div><div class="jdate">JUL 2022 — OCT 2024</div></div>
+  <div class="jsub">Web Developer, Jul 2020 — Jul 2022 · promoted to Manager after two years</div>
+  <ul>
+    <li>Led a team of <b>2 junior developers</b>; shipped <b>100+ client websites</b> and landing pages over four years on fixed scope, budget, and timeline.</li>
+    <li>Rebuilt sites migrating from other CMS platforms into WordPress with design and functionality preserved exactly, and the reverse where clients required it.</li>
+    <li>Converted PSD, Figma, and XD files into production websites using Divi, Elementor, and ACF.</li>
+    <li>Integrated third-party APIs and resolved performance and UX issues across the client portfolio.</li>
+    <li>Implemented the SEO specialist&rsquo;s technical requirements on every build; configured and managed DNS records.</li>
+    <li>Maintained reusable, readable codebases so any developer on the team could extend the work.</li>
+  </ul>
+</div>
+
+<div class="job">
+  <div class="jhead"><div class="jtitle">Back-End Developer <span class="jorg">— Speakers Institute / Boomering Inc.</span></div><div class="jdate">APR 2018 — JUL 2020</div></div>
+  <ul>
+    <li>Built a centralized Learning Management System merging Protégé Central and SI Access into a single portal, with course registration and e-commerce checkout.</li>
+    <li>Onboarded <b>100+ students</b> onto a $25 AUD/month subscription with a $40 AUD registration fee — approximately <b>$30,000 AUD in annual recurring revenue</b> processed through the platform.</li>
+    <li>Customized the WooCommerce payment gateway to fit the organization's course-sales flow.</li>
+    <li>Integrated the LMS with Ontraport (CRM) and automated enrollment campaigns for online courses.</li>
+    <li>Implemented Google Analytics across all company sites and delivered quarterly performance reports that drove each site's enhancement roadmap.</li>
+    <li>Built landing pages for monthly webinar campaigns and automated the online events calendar.</li>
+  </ul>
+</div>
+
+<div class="job">
+  <div class="jhead"><div class="jtitle">Web Developer <span class="jorg">— Transformational Outsourcing Inc.</span></div><div class="jdate">JAN 2014 — FEB 2018</div></div>
+  <ul>
+    <li>Built and customized WordPress child themes, widgets, and plugins, extending existing themes and third-party software to client requirements.</li>
+    <li>Configured and troubleshot servers and DNS records; optimized load speed and capacity.</li>
+    <li>Led content migration for web redesign projects, running multiple projects concurrently on deadline.</li>
+  </ul>
+</div>
+
+<h2><span>Earlier Experience</span></h2>
+<div class="early">
+  <div class="ecol">
+    <div class="ehead"><div class="etitle">Web Developer <span class="eorg">— JetFlight Aviation Services</span></div><div class="edate">2013</div></div>
+    <div class="edesc">Built an interactive company website with a custom admin control panel, database, and e-commerce store.</div>
+  </div>
+  <div class="ecol">
+    <div class="ehead"><div class="etitle">Computer Technical Secretary <span class="eorg">— General Electro Mechanical Services</span></div><div class="edate">2011 — 2013</div></div>
+    <div class="edesc">Built an in-house PHP payroll system; produced project quotations and billing statements.</div>
+  </div>
+</div>
+
+<h2><span>Education</span></h2>
+<div class="ecol">
+  <div class="ehead"><div class="etitle">Diploma in Web Application Development <span class="eorg">— AMA Computer Learning Center</span></div></div>
+</div>
+
+</body></html>
